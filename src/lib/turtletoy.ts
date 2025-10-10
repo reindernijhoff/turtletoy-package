@@ -12,12 +12,13 @@ import { Turtle } from "./turtle.js";
     raf?: boolean;
     maxSteps?: number;
     onStepError?: (e: unknown, i: number) => void;
+    onDrawLine?: (x1: number, y1: number, x2: number, y2: number) => void;
   };
 
-  type UserCodeFactory = (Canvas: any, Turtle: any) => { walk: null | ((i: number) => boolean) };
+  type UserCodeFactory = (Canvas: any, Turtle: any) => { walk: null | ((i: number, t:number) => boolean) };
   
   export function turtleDraw(userCode: string | (() => void), opts: TurtleDrawOptions = {}) {
-    const engine = new Engine(opts.htmlcanvas);
+    const engine = new Engine(opts.htmlcanvas, opts.onDrawLine);
     Canvas.__attachRuntime(engine);
     Engine.__setCurrent(engine);
   
@@ -43,10 +44,14 @@ import { Turtle } from "./turtle.js";
     const stepOnce = () => {
       if (stopped || !walk) return false;
       try {
-        const keep = walk(i++);
-        if (keep === false || i >= maxSteps) return false;
+        const keep = walk(i++, 1);
+        if (keep === false || i >= maxSteps) {
+          stopped = true;
+          return false;
+        }
       } catch (e) {
         opts.onStepError?.(e, i);
+        stopped = true;
         return false;
       }
       return true;
