@@ -21,7 +21,7 @@ export class Engine {
       if (!ctx) throw new Error("2D canvas context unavailable.");
       this.ctx = ctx;
   
-      this.ctx.lineWidth = 1;
+      this.ctx.lineWidth = 2;
       this.ctx.lineCap = "round";
       this.ctx.lineJoin = "round";
       

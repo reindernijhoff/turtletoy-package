@@ -29,7 +29,7 @@ import { Turtle } from "./turtle.js";
     const factory = new Function(
       "Canvas",
       "Turtle",
-      `"use strict";
+      `
   ${body}
   return { walk: (typeof walk === "function") ? walk : null };`
     ) as UserCodeFactory;
