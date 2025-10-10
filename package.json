@@ -1,0 +1,60 @@
+{
+  "name": "turtletoy",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "Web Audio",
+    "Web Audio API",
+    "Synthesis",
+    "Audio Synthesis",
+    "Algorithmic Composition",
+    "Algorave",
+    "Playback",
+    "Music",
+    "DSP",
+    "Signal Processing",
+    "Generative Music",
+    "Turtletoy",
+    "Sonic Pi",
+    "Supercollider"
+  ],
+  "repository": "git@github.com:reindernijhoff/turtletoy-package.git",
+  "author": "Reinder Nijhoff <reinder@infi.nl>",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
+  "main": "./dist/turtletoy.umd.cjs",
+  "module": "./dist/turtletoy.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/turtletoy.js",
+      "require": "./dist/turtletoy.umd.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "clean": "shx rm -rf dist node_modules/.cache/.tsbuildinfo",
+    "prepare-publish": "tsx ./scripts/preparePublish.ts"
+  },
+  "devDependencies": {
+    "@types/shelljs": "^0.8.15",
+    "shelljs": "^0.10.0",
+    "shx": "^0.4.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.2",
+    "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.5.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
