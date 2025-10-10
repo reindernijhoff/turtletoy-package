@@ -1,4 +1,4 @@
-# Turtletoy Package
+# Turtletoy
 
 Run [Turtletoy](https://turtletoy.net) turtle graphics code in the browser or Node.js. Turtletoy is an online platform where you can create generative art using a minimalistic JavaScript Turtle graphics API. 
 
