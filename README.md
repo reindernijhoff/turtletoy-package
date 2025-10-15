@@ -2,6 +2,12 @@
 
 Run [Turtletoy](https://turtletoy.net) turtle graphics code in the browser or Node.js. Turtletoy is an online platform where you can create generative art using a minimalistic JavaScript Turtle graphics API. 
 
+## Demo
+
+- [Turtletoy Example](https://reindernijhoff.github.io/turtletoy-package/).
+
+This is a build from the repository's example/ directory.
+
 ![Example output](docs/screenshot.png)
 
 ## Installation
