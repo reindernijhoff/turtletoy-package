@@ -13,13 +13,11 @@ const { canvas } = turtleDraw(() => {
 	turtle.pendown();
 
 	// The walk function will be called until it returns false.
-	function walk(i: number) {
+	return (i: number) => {
 		turtle.forward(100);
 		turtle.right(144);
 		return i < 4;
-	}
-
-
+	};
 }, { 
   raf: true 
 });

@@ -15,27 +15,42 @@ import { Turtle } from "./turtle.js";
     onDrawLine?: (x1: number, y1: number, x2: number, y2: number) => void;
   };
 
-  type UserCodeFactory = (Canvas: any, Turtle: any) => { walk: null | ((i: number, t:number) => boolean) };
+  type UserCodeFactory = (Canvas: any, Turtle: any) => { walk?: ((i: number, t:number) => boolean) };
+  type WalkFunction = (i: number, t: number) => boolean;
+  type UserCodeFunction = () => void | WalkFunction | { walk?: WalkFunction };
   
-  export function turtleDraw(userCode: string | (() => void), opts: TurtleDrawOptions = {}) {
+  export function turtleDraw(userCode: string | UserCodeFunction, opts: TurtleDrawOptions = {}) {
     const engine = new Engine(opts.htmlcanvas, opts.onDrawLine);
     Canvas.__attachRuntime(engine);
     Engine.__setCurrent(engine);
   
-    const body = typeof userCode === "function"
-      ? fnBody(userCode)
-      : String(userCode);
-  
-    // Execute global code, then capture optional walk
-    const factory = new Function(
-      "Canvas",
-      "Turtle",
-      `
-  ${body}
-  return { walk: (typeof walk === "function") ? walk : null };`
-    ) as UserCodeFactory;
-  
-    const { walk } = factory(Canvas, Turtle);
+    let walk: ((i: number, t: number) => boolean) | null | undefined = null;
+    
+    if (typeof userCode === "function") {
+      // Call function directly - preserves closures and minified references
+      const result = userCode();
+      // Support both direct function return and object with walk property
+      if (typeof result === "function") {
+        walk = result;
+      } else {
+        walk = result?.walk;
+      }
+    } else {
+      // Execute string code
+      const body = String(userCode);
+      const factory = new Function(
+        "$Canvas",
+        "$Turtle",
+        `
+const Canvas = $Canvas;
+const Turtle = $Turtle;
+${body}
+return { walk: (typeof walk === "function") ? walk : undefined };`
+      ) as UserCodeFactory;
+      
+      const result = factory(Canvas, Turtle);
+      walk = result.walk;
+    }
   
     let stopped = false;
     let i = 0;
@@ -76,10 +91,4 @@ import { Turtle } from "./turtle.js";
       canvas: engine.canvas,
       stop() { stopped = true; },
     };
-  }
-  
-  
-  function fnBody(fn: Function) {
-    const src = fn.toString();
-    return src.slice(src.indexOf("{") + 1, src.lastIndexOf("}"));
   }

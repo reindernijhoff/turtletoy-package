@@ -29,16 +29,43 @@ const { canvas } = turtleDraw(() => {
   turtle.goto(-50, -20);
   turtle.pendown();
   
-  function walk(i) {
+  // Return the walk function
+  return (i) => {
     turtle.forward(100);
     turtle.right(144);
     return i < 4;
-  }
+  };
 });
 
 // Add canvas to your page
 document.body.appendChild(canvas);
 ```
+
+## ⚠️ Important: Syntax Difference from Turtletoy.net
+
+**This package uses slightly different syntax than the code on [turtletoy.net](https://turtletoy.net)** to ensure compatibility with modern build tools and minification.
+
+**If you use a `walk` function** (for animated/iterative drawing), the syntax differs:
+
+### On turtletoy.net
+```js
+function walk(i) {
+  turtle.forward(100);
+  return i < 4;
+}
+```
+
+### With this package
+```ts
+return (i) => {
+  turtle.forward(100);
+  return i < 4;
+};
+```
+
+**Key difference:** Instead of defining a `walk` function, you must **return** the walk function at the end of your code. This is necessary for the code to work correctly when bundled and minified.
+
+**Note:** The walk function is optional. If you don't need iterative drawing, simply don't return anything.
 
 ## API
 
